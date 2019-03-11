@@ -2,9 +2,9 @@
   "name": "library-manager",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/kaeross/library-manager/issues"
   },
-  "homepage": "https://github.com/kaeross/library-manager#readme"
+  "homepage": "https://github.com/kaeross/library-manager#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "pug": "^2.0.3",
+    "sequelize": "^4.43.0",
+    "sequelize-cli": "^5.4.0",
+    "sqlite": "^3.0.2"
+  }
 }
