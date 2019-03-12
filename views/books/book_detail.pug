@@ -14,14 +14,12 @@ block content
             input(name="genre" type="text" id="genre" value=genre )
         p
             label(for="year") Year
-            input(name="year" type="text" id="year" )
+            input(name="year" type="text" id="year" value=year)
         p
             input(type="submit" value="Update Book")
         p
             a.button(href="/") Cancel
 
     form(action="/books/" + book.id + "?_method=DELETE", method="post")
-    p
-        a.button(href="/") Cancel
-    p
-        input(type="submit" value="Delete Book")
+        p
+            input(type="submit" value="Delete Book")

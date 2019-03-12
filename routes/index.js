@@ -4,14 +4,24 @@ var Book = require('../models').Book
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render("books/all_books")
+  // Get all books in database
+  Book.findAll({order: [["createdAt", "DESC"]]})
+  .then( books => {
+    res.render("books/all_books", {
+      pageTitle: 'Books',
+      books: books
+    })
+  })
 });
 
 /* GET book details page. */
-router.get('/book_detail/:id', function(req, res, next) {
-  Book.findById(req.params.id)
+router.get('/book/:id', function(req, res, next) {
+  // Retrieve book from database by id
+  Book.findByPk(req.params.id)
   .then( book => {
+    // Pass in book data to pug template
       res.render("books/book_detail", {
+        pageTitle: book.title,
         book: book,
         title: book.title, 
         author: book.author, 
@@ -23,16 +33,19 @@ router.get('/book_detail/:id', function(req, res, next) {
 
 /* GET new book page. */
 router.get('/new', function(req, res, next) {
-  res.render("books/new_book")
+  res.render("books/new_book", {
+    pageTitle: 'New Book'
+  })
 });
 
 /* POST add new book. */
 router.post('/', function(req, res, next) {
   Book.create(req.body).then(book => {
-    res.redirect("/book_detail/" + book.id);
+    res.redirect("/book/" + book.id);
   }).catch(err => {
     if(err.name === "SequelizeValidationError") {
       res.render("books/book_detail", {
+        pageTitle: book.title,
         book: book,
         title: book.title, 
         author: book.author, 
