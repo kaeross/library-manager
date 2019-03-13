@@ -1,5 +1,7 @@
 const express = require('express')
 const path = require('path')
+const sequelize = require('./models').sequelize
+const bodyParser = require('body-parser')
 
 // Get router files 
 const routes = require('./routes/index')
@@ -12,13 +14,17 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug')
 
-// Give app accesss to public directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(bodyParser.urlencoded({
+    extended: true
+}))
+app.use(bodyParser.json())
 
 // Set routes
 app.use('/', routes)
 app.use('/books', books)
 
-
-// Listen on port 3000
-app.listen(3000)
+// Sync database then listen on port 3000
+sequelize.sync().then(() => {
+    app.listen(3000)
+});

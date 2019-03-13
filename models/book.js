@@ -1,8 +1,22 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Book = sequelize.define('Book', {
-    title: DataTypes.STRING,
-    author: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "This field is required"
+        }
+      }
+    },
+    author: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: {
+          msg: "This field is required"
+        }
+      }
+    },
     genre: DataTypes.STRING,
     year: DataTypes.INTEGER
   }, {});
