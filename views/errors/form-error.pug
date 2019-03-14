@@ -2,4 +2,6 @@ if errors
     h2.error Oooops!
     ul.error
         for error in errors
-            li= error.message
+            li
+                span(style="text-transform: capitalize")= error.path + ": "
+                span= error.message

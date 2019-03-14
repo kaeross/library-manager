@@ -3,5 +3,6 @@ extends ../layout.pug
 block content
     h1 Server Error
     p Sorry! There was an unexpected error on the server.
-    h2 Further details...
+    h3 Further details...
+    p= error.message
     p= error
