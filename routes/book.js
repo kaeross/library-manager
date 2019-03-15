@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var Book = require('../models').Book
+const sequelize = require('../models').sequelize
+const Op = sequelize.Op
 
 /**
  * Function to handle 500 server error
@@ -8,7 +10,7 @@ var Book = require('../models').Book
  * @param {Object} error 
  */
 const serverError = (response, error) => {
-  console.log(error)
+  console.error(error)
   response.render('errors/error', {
     pageTitle: '500 error'
   })
@@ -61,6 +63,29 @@ router.post('/new', function(req, res, next) {
       throw err
     }
   }).catch(err => serverError(res, err))
+})
+
+
+/**
+ * Handles the search functionality
+ */
+router.post('/search', function(req, res, next) {
+  const category = req.body.category
+  const searchVal = req.body.search
+  let searchObj = {}
+
+  searchObj[category] = {
+    [Op.like] : '%' + req.body.search + '%'
+  }
+
+  Book.findAll({
+    where: searchObj
+  }).then( books => {
+    return res.render("books/index", {
+      pageTitle: 'Search results for: ' + req.body.search,
+      books: books
+    })
+  }).catch(err => console.log(err))
 })
 
 /* GET book details page. */
@@ -119,4 +144,5 @@ router.post('/:id/delete', function(req, res, next) {
   .catch(err => serverError(res, err))
 })
 
-module.exports = router;
+
+module.exports = router

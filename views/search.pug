@@ -1,0 +1,14 @@
+form(action="books/search" method="POST")
+    p
+        label(for="category") Choose a category:
+        select(name="category" id="category")
+            option(value="") Please select
+            option(value="title") Title
+            option(value="author") Author
+            option(value="genre") Genre
+            option(value="year") Year
+    p
+        label(for="search") Search
+        input(type=text name="search" id="search" placeholder="What are you looking for?" value=search)
+    p
+        input(type="submit" value="Search")
