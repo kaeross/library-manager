@@ -1,14 +1,14 @@
-form(action="books/search" method="POST")
-    p
-        label(for="category") Choose a category:
-        select(name="category" id="category")
+form(action="books/search" method="POST").mr-0
+    p.col
+        label(for="category").col-sm-2 Search by:
+        select(name="category" id="category").w-100
             option(value="") Please select
             option(value="title") Title
             option(value="author") Author
             option(value="genre") Genre
             option(value="year") Year
-    p
-        label(for="search") Search
+    p.col
+        label(for="search").col-sm-2 Search for:
         input(type=text name="search" id="search" placeholder="What are you looking for?" value=search)
-    p
-        input(type="submit" value="Search")
+    p.col.jc-right
+        input(type="submit" value="Search").ml-0

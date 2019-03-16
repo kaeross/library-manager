@@ -83,7 +83,8 @@ router.post('/search', function(req, res, next) {
   }).then( books => {
     return res.render("books/index", {
       pageTitle: 'Search results for: ' + req.body.search,
-      books: books
+      books: books,
+      hideSearch: true
     })
   }).catch(err => console.log(err))
 })
