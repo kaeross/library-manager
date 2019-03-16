@@ -25,7 +25,14 @@ const notFound = (response) => {
 /* GET home page - Shows the full list of books */
 router.get('/', function(req, res, next) {
   // Get all books in database
-  Book.findAll({order: [["createdAt", "DESC"]]})
+  Book.findAll({
+    where: {
+      id: {
+        [Op.between]: [0, 5]
+      }      
+    },
+    order: [["createdAt", "DESC"]]
+  })
   .then( books => {
     return res.render("books/index", {
       pageTitle: 'Books',

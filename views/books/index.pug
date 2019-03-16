@@ -14,27 +14,30 @@ block content
 				.col-md-2
 					p
 						a.button(href="/") Back
-	.row
-		.container
-			table.w-100
-				thead 
-					tr 
-						th#title Title 
-						th#author Author 
-						th#genre Genre 
-						th#year Year
-				tbody
-					each book in books
-						tr
-							td 
-								a(href="books/" + book.id)= book.title
-							td= book.author 
-							td= book.genre
-							td= book.year
-	.row
-		.container
-			.pagination
-				.left
-					.button= "<"
-				.right
-					.button= ">"
+	form(action="/" method="POST")
+		.row
+			.container
+				table.w-100
+					thead 
+						tr 
+							th#title Title 
+							th#author Author 
+							th#genre Genre 
+							th#year Year
+					tbody
+						each book in books
+							tr
+								td 
+									a(href="books/" + book.id)= book.title
+								td= book.author 
+								td= book.genre
+								td= book.year
+		.row
+			.container
+				.pagination
+						.left
+							.button= "<"
+						p 1
+							input.d-none(value=)
+						.right
+							.button= ">"
