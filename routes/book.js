@@ -16,12 +16,6 @@ const serverError = (response, error) => {
   })
 }
 
-const notFound = (response) => {
-  response.render('errors/page_not_found', {
-    pageTitle: '404 error'
-  })
-}
-
 /* GET home page - Shows the full list of books */
 router.get('/', function(req, res, next) {
 
@@ -114,15 +108,11 @@ router.get('/book_detail/:id', function(req, res, next) {
     // Retrieve book from database by id
     Book.findByPk(req.params.id)
     .then( book => {
-      if (book) {
-        // Pass in book data to pug template
-        res.render("books/update-book", {
-          pageTitle: book.title,
-          book: book
-        })
-      } else {
-        notFound(res)
-      }
+      // Pass in book data to pug template
+      res.render("books/update-book", {
+        pageTitle: book.title,
+        book: book
+      })
     })
     .catch(err => serverError(res, err))
 });
@@ -133,24 +123,20 @@ router.get('/book_detail/:id', function(req, res, next) {
 router.post('/book_detail/:id', function(req, res, next) {
   Book.findByPk(req.params.id)
   .then( book => {
-    if (book) { // check book hasn't suddenly disappeared anywhere
-     // update book and if successful redirect to homepage
-      book.update(req.body).then( () => res.redirect("/books"))
-      .catch(err => {
-        // If there is a validation error pass the errors to the template and don't redirect
-        if(err.name === "SequelizeValidationError") {
-          res.render("books/update-book", {
-            book: book,
-            pageTitle: "Update Book",
-            errors: err.errors
-          })
-        } else {
-          throw err
-        }
-      })
-    } else {
-      notFound(res)
-    }
+    // update book and if successful redirect to homepage
+    book.update(req.body).then( () => res.redirect("/books"))
+    .catch(err => {
+      // If there is a validation error pass the errors to the template and don't redirect
+      if(err.name === "SequelizeValidationError") {
+        res.render("books/update-book", {
+          book: book,
+          pageTitle: "Update Book",
+          errors: err.errors
+        })
+      } else {
+        throw err
+      }
+    })
   })
   .catch(err => serverError(res, err))
 })
