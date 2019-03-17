@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
         app.use(function(err, req, res, next) {
             res.status(err.status || 500);
             err.status === 404 ? res.render('errors/page_not_found') : res.render('errors/error')
-            console.error(err.message)
+            if (err) console.error(err.message)
         });
     } else {
         // production error handler
