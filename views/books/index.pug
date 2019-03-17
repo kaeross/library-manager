@@ -9,14 +9,17 @@ block content
 			//- Hide search on search page and show back button
 			if(!hideSearch)
 				.col-md-2.jc-right
-					include ../search
+					include ../includes/search
 			else
 				.col-md-2
 					p
 						a.button(href="/") Back
-	form(action="/" method="POST")
-		.row
-			.container
+	.row
+		.container
+			if (books.length === 0 && !hideSearch)
+				p Sorry your search didn't match any books
+			
+			else
 				table.w-100
 					thead 
 						tr 
@@ -28,18 +31,30 @@ block content
 						each book in books
 							tr
 								td 
-									a(href="books/" + book.id)= book.title
+									a(href="books/book_detail/" + book.id)= book.title
 								td= book.author 
 								td= book.genre
 								td= book.year
+
+	if (!hideSearch)
 		.row
 			.container
 				.pagination
-						.left
-							.button= "<"
-						p 1
-							input.d-none(value=)
-						.right
-							.button= ">"
-	
+					if (page !== 'viewAll')
+						if (page != '1')
+							.left
+								a.button(href="books?page=" + (parseInt(page) - 1))= "<"
+						p.inline.pr-1.pl-1= 'Page ' + page
+						if (!finalPage)
+							.right
+								a.button(href="books?page=" + (parseInt(page) + 1))= ">"
+						if (books.length = 10 || finalPage)
+						p.inline.pl-2
+							a(href="books?page=viewAll") View all
+					else
+						p
+							a(href="books?page=1") Show less
+
+				
+		
 	script(src="/js/tableSort.js")

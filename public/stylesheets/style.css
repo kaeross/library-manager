@@ -98,6 +98,10 @@ input[type=text] {
   width: 300px;
 }
 
+.d-none {
+  display: none
+}
+
 .error {
   color: rgb(236, 15, 15);
 }
@@ -191,6 +195,10 @@ input[type=text] {
   padding-top: 20px;
 }
 
+.pagination a {
+  text-decoration: none;
+}
+
 .pagination .right {
   display: inline-block
 }
@@ -198,6 +206,10 @@ input[type=text] {
 .pagination .left {
   margin-right: 2px;
   display: inline-block
+}
+
+.inline {
+  display: inline;
 }
 
 .row {

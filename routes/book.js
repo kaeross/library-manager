@@ -24,22 +24,36 @@ const notFound = (response) => {
 
 /* GET home page - Shows the full list of books */
 router.get('/', function(req, res, next) {
-  // Get all books in database
-  Book.findAll({
-    where: {
-      id: {
-        [Op.between]: [0, 5]
-      }      
-    },
-    order: [["createdAt", "DESC"]]
-  })
-  .then( books => {
-    return res.render("books/index", {
-      pageTitle: 'Books',
-      books: books
-    })
-  })
-  .catch(err => serverError(res, err))
+
+  // If there is no query string default to page 1
+  let nextPage = req.query.page ? req.query.page : 1
+
+  // Show all if page is view all
+  if (nextPage === 'viewAll') {
+    Book.findAll().then( books => {
+      return res.render("books/index", {
+        pageTitle: 'Books',
+        books: books,
+        page: nextPage
+      })
+    }).catch(err => serverError(res, err))
+  } else {
+    console.log(nextPage)
+    // Get number of books
+    Book.findAll({
+      offset: (nextPage -1) * 10,
+      limit: 10,
+      order: [["createdAt", "DESC"]]
+    }).then( books => {
+      // If there are less than 10 books returned this is the final page      
+      return res.render("books/index", {
+        pageTitle: 'Books',
+        books: books,
+        page: nextPage,
+        finalPage: books.length < 10
+      })
+    }).catch(err => serverError(res, err))
+  }
 });
 
 /** 
@@ -57,7 +71,7 @@ router.get('/new', function(req, res, next) {
  * Handles the POST request to add a new book. 
  * */
 router.post('/new', function(req, res, next) {
-  Book.create(req.body).then(book => res.redirect("/books/" + book.id))
+  Book.create(req.body).then(book => res.redirect("/books/book_detail/" + book.id))
   .catch(err => {
     // If there is a validation error pass the errors to the template
     if(err.name === "SequelizeValidationError") {
@@ -97,7 +111,7 @@ router.post('/search', function(req, res, next) {
 })
 
 /* GET book details page. */
-router.get('/:id', function(req, res, next) {
+router.get('/book_detail/:id', function(req, res, next) {
     // Retrieve book from database by id
     Book.findByPk(req.params.id)
     .then( book => {
@@ -117,12 +131,12 @@ router.get('/:id', function(req, res, next) {
 /**
  * Handles the POST request to update a book. 
  * */
-router.post('/:id', function(req, res, next) {
+router.post('/book_detail/:id', function(req, res, next) {
   Book.findByPk(req.params.id)
   .then( book => {
     if (book) { // check book hasn't suddenly disappeared anywhere
      // update book and if successful redirect to homepage
-      book.update(req.body).then( () => res.redirect("/books/"))
+      book.update(req.body).then( () => res.redirect("/books"))
       .catch(err => {
         // If there is a validation error pass the errors to the template and don't redirect
         if(err.name === "SequelizeValidationError") {
@@ -145,7 +159,7 @@ router.post('/:id', function(req, res, next) {
 /**
  * Handles the POST request to delete a book. 
  * */
-router.post('/:id/delete', function(req, res, next) {
+router.post('/book_detail/:id/delete', function(req, res, next) {
   Book.findByPk(req.params.id)
   .then( book => book.destroy())
   .then( () => res.redirect('/') )
