@@ -62,6 +62,7 @@ th {
   border-bottom: 2px solid #D8B493;
   text-align: left;
   padding: 5px 20px 5px 10px;
+  cursor: pointer;
 }
 
 tr {
