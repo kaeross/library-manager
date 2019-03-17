@@ -2,10 +2,11 @@ extends ../layout.pug
 
 block content
 	.row.pb-3
-		.container
-			.col-md-2
+		.container.jc-between
+			div
 				h1= pageTitle
-
+				p
+					a.button(href="books/new") Create new book
 			//- Hide search on search page and show back button
 			if(!hideSearch)
 				.col-md-2.jc-right
@@ -16,6 +17,7 @@ block content
 						a.button(href="/") Back
 	.row
 		.container
+			
 			if (books.length === 0 && !hideSearch)
 				p Sorry your search didn't match any books
 			

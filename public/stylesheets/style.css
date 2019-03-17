@@ -23,6 +23,7 @@ a.button, .button, input[type=submit] {
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 form a.button, input[type=submit], .button {
@@ -184,6 +185,10 @@ input[type=text] {
 
 .jc-right {
   justify-content: right
+}
+
+.jc-between {
+  justify-content: space-between
 }
 
 .search {
