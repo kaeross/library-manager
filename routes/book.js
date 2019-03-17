@@ -38,7 +38,6 @@ router.get('/', function(req, res, next) {
       })
     }).catch(err => serverError(res, err))
   } else {
-    console.log(nextPage)
     // Get number of books
     Book.findAll({
       offset: (nextPage -1) * 10,

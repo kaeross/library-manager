@@ -23,34 +23,36 @@ app.use(bodyParser.json())
 // Set routes
 app.use('/', routes)
 app.use('/books', books)
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
+  
+  // error handlers
+  
+  // development error handler
+  // will print stacktrace
+    if (app.get('env') === 'development') {
+        app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            err.status === 404 ? res.render('errors/page_not_found') : res.render('errors/error')
+            console.error(err.message)
+        });
+    } else {
+        // production error handler
+        // no stacktraces leaked to user
+        app.use(function(err, req, res, next) {
+            res.status(err.status || 500);
+            err.status === 404 ? res.render('errors/page_not_found') : res.render('errors/error')
+        })
+    }
+  
+  
+
 
 // Sync database then listen on port 3000
 sequelize.sync().then(() => {
     app.listen(3000)
-});
-
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        console.log(err)
-        res.status(err.status || 500);
-        res.render('errors/error', {
-            pageTitle: '500 error',
-            message: err.message,
-            error: err
-        });
-    });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('errors/error', {
-        pageTitle: '500 error',
-        message: err.message,
-        error: {}
-    });
 });
